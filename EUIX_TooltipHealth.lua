@@ -128,8 +128,12 @@ bar:SetScript("OnUpdate", function(self, elapsed)
     if elapsedAcc < THROTTLE then return end
     elapsedAcc = 0
     local unit = self.unit
-    if not unit or not UnitExists(unit) then
-        HideBar()
+    if not unit then return end
+    -- Once the cursor leaves an NPC, "mouseover" stops existing while the tooltip
+    -- is still fading out. Keep the last values frozen: the bar is a child of
+    -- GameTooltip, so it fades with it and is hidden by the GameTooltip OnHide hook.
+    if not UnitExists(unit) then
+        self.unit = nil
         return
     end
     Update(unit)
