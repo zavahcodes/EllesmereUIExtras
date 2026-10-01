@@ -1,0 +1,18 @@
+## Interface: 120000, 120001, 120005, 120007, 120100, 16001
+## Title: |cff0cd29fEllesmereUI|r Extras
+## Category: |cff0cd29fEllesmere|rUI
+## Group: EllesmereUI
+## Notes: Extra features not offered by EllesmereUI (tooltip health bar, target of target).
+## Author: Ellesmere
+## Version: 0.1.0
+## Dependencies: EllesmereUI
+## OptionalDeps: EllesmereUIBlizzardSkin
+## SavedVariables: EllesmereUIExtrasDB
+## IconTexture: Interface\AddOns\EllesmereUI\media\eg-logo.tga
+
+# Core
+EllesmereUIExtras.lua
+
+# Tooltip features
+EUIX_TooltipHealth.lua
+EUIX_TooltipTarget.lua
