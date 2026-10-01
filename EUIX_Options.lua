@@ -61,6 +61,18 @@ function ns.InitOptions()
         "Adds a Target: line with who the hovered player or NPC is targeting (>> YOU << in red when it's you). "
         .. "Skipped automatically when EllesmereUI's own \"Show Unit Target\" option is enabled.")
 
+    if layout and CreateSettingsListSectionHeaderInitializer then
+        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Unit Frames"))
+    end
+
+    AddCheckbox("playerHidePower", "Hide player power bar",
+        "WoW Forever, Blizzard Style and Classic WoW UI only: hides the player frame's power bar "
+        .. "and stretches the health bar into its space.",
+        function() if ns.RefreshPlayerPower then ns.RefreshPlayerPower() end end)
+    AddSlider("playerHidePowerExtra", "Health bar extra height",
+        "Extra pixels added below the stretched player health bar so it reaches the frame's bottom edge.",
+        0, 8, 1, function() if ns.RefreshPlayerPower then ns.RefreshPlayerPower() end end)
+
     Settings.RegisterAddOnCategory(category)
 end
 

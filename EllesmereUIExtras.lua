@@ -11,6 +11,8 @@ local DEFAULTS = {
     tooltipHealthHeight = 8,
     tooltipHealthTextSize = 10,
     tooltipTarget       = true,
+    playerHidePower     = false,
+    playerHidePowerExtra = 1,
 }
 ns.DEFAULTS = DEFAULTS
 
@@ -71,6 +73,11 @@ loader:SetScript("OnEvent", function(self, _, name)
     if name ~= ADDON_NAME then return end
     self:UnregisterEvent("ADDON_LOADED")
     EllesmereUIExtrasDB = EllesmereUIExtrasDB or {}
+    -- The first build saved 3 px of extra height (overshoots the frame edge).
+    if EllesmereUIExtrasDB.playerHidePowerExtra == 3 and not EllesmereUIExtrasDB.playerHidePowerExtraFixed then
+        EllesmereUIExtrasDB.playerHidePowerExtra = nil
+    end
+    EllesmereUIExtrasDB.playerHidePowerExtraFixed = true
     for k, v in pairs(DEFAULTS) do
         if EllesmereUIExtrasDB[k] == nil then EllesmereUIExtrasDB[k] = v end
     end
