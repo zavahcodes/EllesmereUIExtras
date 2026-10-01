@@ -16,3 +16,6 @@ EllesmereUIExtras.lua
 # Tooltip features
 EUIX_TooltipHealth.lua
 EUIX_TooltipTarget.lua
+
+# Options
+EUIX_Options.lua

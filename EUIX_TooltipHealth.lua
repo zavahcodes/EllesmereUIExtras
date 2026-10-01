@@ -45,16 +45,24 @@ text:SetPoint("CENTER", bar, "CENTER", 0, 0)
 local fontApplied = false
 local function ApplyFont()
     fontApplied = true
+    local size = ns.db.tooltipHealthTextSize or 10
+    -- Fallback: keep the template's own face/flags, change only the size.
+    local path, _, flag = text:GetFont()
+    flag = flag or ""
     local EUI = EllesmereUI
-    if not (EUI and EUI.GetFontPath) then return end
-    local ok, path = pcall(EUI.GetFontPath)
-    if not ok or not path then return end
-    local flag = ""
-    if EUI.GetFontOutlineFlag then
-        local okF, f = pcall(EUI.GetFontOutlineFlag)
-        if okF and f then flag = f end
+    if EUI and EUI.GetFontPath then
+        local ok, p = pcall(EUI.GetFontPath)
+        if ok and p then
+            path = p
+            flag = ""
+            if EUI.GetFontOutlineFlag then
+                local okF, f = pcall(EUI.GetFontOutlineFlag)
+                if okF and f then flag = f end
+            end
+        end
     end
-    text:SetFont(path, 10, flag)
+    if not path then return end
+    text:SetFont(path, size, flag)
     if flag == "" then
         text:SetShadowOffset(1, -1)
         text:SetShadowColor(0, 0, 0, 1)
@@ -151,6 +159,24 @@ ns.OnUnitTooltip(function(tt, unit)
     Update(unit)
     bar:Show()
 end)
+
+-- Live apply for the options panel: hide when turned off, else re-apply height/text.
+function ns.RefreshTooltipHealth()
+    -- Font size is re-applied on the next show even when the bar is hidden now.
+    fontApplied = false
+    if not bar:IsShown() then return end
+    ApplyFont()
+    if not ns.db.tooltipHealthBar then
+        HideBar()
+        return
+    end
+    bar:SetHeight(ns.db.tooltipHealthHeight or 8)
+    if bar.unit and UnitExists(bar.unit) then
+        Update(bar.unit)
+    elseif not ns.db.tooltipHealthText then
+        text:Hide()
+    end
+end
 
 -- Item/spell tooltips reuse GameTooltip: clear the bar whenever its content is wiped.
 GameTooltip:HookScript("OnHide", HideBar)

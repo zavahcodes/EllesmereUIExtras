@@ -9,8 +9,10 @@ local DEFAULTS = {
     tooltipHealthBar    = true,
     tooltipHealthText   = true,
     tooltipHealthHeight = 8,
+    tooltipHealthTextSize = 10,
     tooltipTarget       = true,
 }
+ns.DEFAULTS = DEFAULTS
 
 -- Live table; replaced by the saved one on ADDON_LOADED. Features read ns.db at call time.
 ns.db = CopyTable(DEFAULTS)
@@ -73,4 +75,5 @@ loader:SetScript("OnEvent", function(self, _, name)
         if EllesmereUIExtrasDB[k] == nil then EllesmereUIExtrasDB[k] = v end
     end
     ns.db = EllesmereUIExtrasDB
+    if ns.InitOptions then ns.InitOptions() end
 end)
