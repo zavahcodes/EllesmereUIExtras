@@ -105,6 +105,15 @@ function ns.InitOptions()
         { { "NONE", "None" }, { "OUTLINE", "Outline" }, { "THICKOUTLINE", "Thick outline" } },
         RefreshBubbles)
 
+    if layout and CreateSettingsListSectionHeaderInitializer then
+        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Loot Rolls"))
+    end
+
+    AddCheckbox("lootRollVotes", "Show roll votes",
+        "On loot roll popups, shows how many group members picked Need, Greed, Disenchant, Transmog or Pass "
+        .. "on each button. Hovering a button lists who picked it, in class colors.",
+        function() if ns.RefreshLootRollVotes then ns.RefreshLootRollVotes() end end)
+
     Settings.RegisterAddOnCategory(category)
 end
 
