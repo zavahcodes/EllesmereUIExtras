@@ -37,6 +37,18 @@ function ns.InitOptions()
         return setting
     end
 
+    local function AddDropdown(key, label, tooltip, choices, onChange)
+        local setting = Register(key, Settings.VarType.String, label)
+        local function GetOptions()
+            local container = Settings.CreateControlTextContainer()
+            for i = 1, #choices do container:Add(choices[i][1], choices[i][2]) end
+            return container:GetData()
+        end
+        Settings.CreateDropdown(category, setting, GetOptions, tooltip)
+        if onChange then setting:SetValueChangedCallback(onChange) end
+        return setting
+    end
+
     local function RefreshHealth()
         if ns.RefreshTooltipHealth then ns.RefreshTooltipHealth() end
     end
@@ -72,6 +84,26 @@ function ns.InitOptions()
     AddSlider("playerHidePowerExtra", "Health bar extra height",
         "Extra pixels added below the stretched player health bar so it reaches the frame's bottom edge.",
         0, 8, 1, function() if ns.RefreshPlayerPower then ns.RefreshPlayerPower() end end)
+
+    if layout and CreateSettingsListSectionHeaderInitializer then
+        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("Chat Bubbles"))
+    end
+
+    local function RefreshBubbles()
+        if ns.RefreshChatBubbles then ns.RefreshChatBubbles() end
+    end
+
+    AddCheckbox("chatBubbleCustom", "Customize chat bubble font",
+        "Applies the size and outline below to Blizzard's chat bubbles (also inside instances). "
+        .. "Off restores Blizzard's default font.",
+        RefreshBubbles)
+    AddSlider("chatBubbleFontSize", "Chat bubble font size",
+        "Font size of the text inside chat bubbles.",
+        8, 24, 1, RefreshBubbles)
+    AddDropdown("chatBubbleOutline", "Chat bubble outline",
+        "Outline drawn around the chat bubble text.",
+        { { "NONE", "None" }, { "OUTLINE", "Outline" }, { "THICKOUTLINE", "Thick outline" } },
+        RefreshBubbles)
 
     Settings.RegisterAddOnCategory(category)
 end

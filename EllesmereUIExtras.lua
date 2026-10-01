@@ -13,6 +13,9 @@ local DEFAULTS = {
     tooltipTarget       = true,
     playerHidePower     = false,
     playerHidePowerExtra = 1,
+    chatBubbleCustom    = false,
+    chatBubbleFontSize  = 13,
+    chatBubbleOutline   = "OUTLINE",
 }
 ns.DEFAULTS = DEFAULTS
 
@@ -82,5 +85,6 @@ loader:SetScript("OnEvent", function(self, _, name)
         if EllesmereUIExtrasDB[k] == nil then EllesmereUIExtrasDB[k] = v end
     end
     ns.db = EllesmereUIExtrasDB
+    if ns.RefreshChatBubbles then ns.RefreshChatBubbles() end
     if ns.InitOptions then ns.InitOptions() end
 end)

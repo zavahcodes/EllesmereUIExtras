@@ -2,7 +2,7 @@
 ## Title: |cff0cd29fEllesmereUI|r Extras
 ## Category: |cff0cd29fEllesmere|rUI
 ## Group: EllesmereUI
-## Notes: Extra features not offered by EllesmereUI (tooltip health bar, target of target, player frame without power bar).
+## Notes: Extra features not offered by EllesmereUI (tooltip health bar, target of target, player frame without power bar, chat bubble font size/outline).
 ## Author: Ellesmere
 ## Version: 0.1.0
 ## Dependencies: EllesmereUI
@@ -19,6 +19,9 @@ EUIX_TooltipTarget.lua
 
 # Unit frame features
 EUIX_PlayerPower.lua
+
+# Chat features
+EUIX_ChatBubbles.lua
 
 # Options
 EUIX_Options.lua
