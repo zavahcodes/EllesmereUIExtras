@@ -17,6 +17,7 @@ local DEFAULTS = {
     chatBubbleFontSize  = 13,
     chatBubbleOutline   = "OUTLINE",
     lootRollVotes       = true,
+    worldMapEnabled     = true,
 }
 ns.DEFAULTS = DEFAULTS
 
@@ -87,5 +88,6 @@ loader:SetScript("OnEvent", function(self, _, name)
     end
     ns.db = EllesmereUIExtrasDB
     if ns.RefreshChatBubbles then ns.RefreshChatBubbles() end
+    if ns.RefreshWorldMap then ns.RefreshWorldMap() end
     if ns.InitOptions then ns.InitOptions() end
 end)

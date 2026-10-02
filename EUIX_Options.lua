@@ -114,6 +114,20 @@ function ns.InitOptions()
         .. "on each button. Hovering a button lists who picked it, in class colors.",
         function() if ns.RefreshLootRollVotes then ns.RefreshLootRollVotes() end end)
 
+    if layout and CreateSettingsListSectionHeaderInitializer then
+        layout:AddInitializer(CreateSettingsListSectionHeaderInitializer("World Map"))
+    end
+
+    local function RefreshWorldMap()
+        if ns.RefreshWorldMap then ns.RefreshWorldMap() end
+    end
+
+    AddCheckbox("worldMapEnabled", "World map zoomed on player",
+        "Opens the world map on your zone, fully zoomed in and centered on your character, and follows you while "
+        .. "it's open (drag the map to stop, double-click it to follow again). Entering a new zone with the map open "
+        .. "switches to its map. Inside instances the map is Blizzard's own.",
+        RefreshWorldMap)
+
     Settings.RegisterAddOnCategory(category)
 end
 
