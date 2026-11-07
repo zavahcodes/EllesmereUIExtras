@@ -23,6 +23,20 @@ local IsInInstance = IsInInstance
 local PAN_TIME     = 0.3  -- smooth pan back to the player on double-click, seconds
 local DOUBLE_CLICK = 0.25 -- max seconds between the clicks of a double-click
 
+local module = ns.RegisterModule({
+    key = "worldMap",
+    name = "World Map",
+    defaults = {
+        worldMapEnabled = true,
+    },
+    options = {
+        { type = "checkbox", key = "worldMapEnabled", label = "World map zoomed on player",
+          tooltip = "Opens the world map on your zone, fully zoomed in and centered on your character, and follows you while "
+              .. "it's open (drag the map to stop, double-click it to follow again). Entering a new zone with the map open "
+              .. "switches to its map. Inside instances the map is Blizzard's own." },
+    },
+})
+
 local installed = false
 local map, sc -- WorldMapFrame, WorldMapFrame.ScrollContainer
 
@@ -277,10 +291,11 @@ local function OnMapOpened()
     ZoomToPlayer()
 end
 
-function ns.RefreshWorldMap()
+function module.Refresh()
     if not installed then return end
     if not Enabled() then StopFollowing() end
 end
+module.OnLoad = module.Refresh
 
 -------------------------------------------------------------------------------
 --  Install (Blizzard_WorldMap may be load-on-demand)
@@ -386,7 +401,7 @@ local function Install()
     events:RegisterEvent("PLAYER_ENTERING_WORLD")
     events:SetScript("OnEvent", CheckMap)
 
-    ns.RefreshWorldMap()
+    module.Refresh()
 end
 
 if C_AddOns.IsAddOnLoaded("Blizzard_WorldMap") then

@@ -7,10 +7,32 @@ if EUI_CLIENT_BLOCKED then return end -- pre-12.1 client failsafe (EllesmereUI_C
 -------------------------------------------------------------------------------
 local _, ns = ...
 local IsSecret = ns.IsSecret
+local ClassColor = ns.ClassColor
 
 local FLAT = "Interface\\Buttons\\WHITE8X8"
 local THROTTLE = 0.1
 local DEFAULT_R, DEFAULT_G, DEFAULT_B = 0.1, 0.8, 0.1
+
+local module = ns.RegisterModule({
+    key = "tooltipHealth",
+    name = "Tooltip",
+    defaults = {
+        tooltipHealthBar      = true,
+        tooltipHealthText     = true,
+        tooltipHealthHeight   = 8,
+        tooltipHealthTextSize = 10,
+    },
+    options = {
+        { type = "checkbox", key = "tooltipHealthBar", label = "Show health bar",
+          tooltip = "Shows a health bar below unit tooltips (players and NPCs), colored by class or reaction." },
+        { type = "checkbox", key = "tooltipHealthText", label = "Show health percentage",
+          tooltip = "Shows the health percentage on top of the tooltip health bar." },
+        { type = "slider", key = "tooltipHealthHeight", label = "Health bar height",
+          tooltip = "Height of the tooltip health bar, in pixels.", min = 4, max = 16, step = 1 },
+        { type = "slider", key = "tooltipHealthTextSize", label = "Health percentage size",
+          tooltip = "Font size of the health percentage on the tooltip health bar.", min = 6, max = 18, step = 1 },
+    },
+})
 
 local bar = CreateFrame("StatusBar", "EUIX_TooltipHealthBar", GameTooltip)
 bar:SetStatusBarTexture(FLAT)
@@ -67,16 +89,6 @@ local function ApplyFont()
         text:SetShadowOffset(1, -1)
         text:SetShadowColor(0, 0, 0, 1)
     end
-end
-
-local function ClassColor(classToken)
-    if not classToken or IsSecret(classToken) then return nil end
-    if EllesmereUI and EllesmereUI.GetClassColor then
-        local c = EllesmereUI.GetClassColor(classToken)
-        if c then return c.r, c.g, c.b end
-    end
-    local c = RAID_CLASS_COLORS and RAID_CLASS_COLORS[classToken]
-    if c then return c.r, c.g, c.b end
 end
 
 local function BarColor(unit, dead)
@@ -161,7 +173,7 @@ ns.OnUnitTooltip(function(tt, unit)
 end)
 
 -- Live apply for the options panel: hide when turned off, else re-apply height/text.
-function ns.RefreshTooltipHealth()
+function module.Refresh()
     -- Font size is re-applied on the next show even when the bar is hidden now.
     fontApplied = false
     if not bar:IsShown() then return end

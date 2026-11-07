@@ -10,6 +10,26 @@ local _, ns = ...
 
 local FALLBACK_FONT = "Fonts\\FRIZQT__.TTF"
 
+local module = ns.RegisterModule({
+    key = "chatBubbles",
+    name = "Chat Bubbles",
+    defaults = {
+        chatBubbleCustom   = false,
+        chatBubbleFontSize = 13,
+        chatBubbleOutline  = "OUTLINE",
+    },
+    options = {
+        { type = "checkbox", key = "chatBubbleCustom", label = "Customize chat bubble font",
+          tooltip = "Applies the size and outline below to Blizzard's chat bubbles (also inside instances). "
+              .. "Off restores Blizzard's default font." },
+        { type = "slider", key = "chatBubbleFontSize", label = "Chat bubble font size",
+          tooltip = "Font size of the text inside chat bubbles.", min = 8, max = 24, step = 1 },
+        { type = "dropdown", key = "chatBubbleOutline", label = "Chat bubble outline",
+          tooltip = "Outline drawn around the chat bubble text.",
+          choices = { { "NONE", "None" }, { "OUTLINE", "Outline" }, { "THICKOUTLINE", "Thick outline" } } },
+    },
+})
+
 local fontObj = ChatBubbleFont
 -- Blizzard's original font, captured before we ever change it, so turning the
 -- feature off restores it without a reload.
@@ -25,7 +45,7 @@ local function OutlineFlag(v)
     return ""
 end
 
-function ns.RefreshChatBubbles()
+function module.Refresh()
     if not fontObj then return end
     local db = ns.db
     if db.chatBubbleCustom then
@@ -50,5 +70,7 @@ end
 local f = CreateFrame("Frame")
 f:RegisterEvent("PLAYER_ENTERING_WORLD")
 f:SetScript("OnEvent", function()
-    if ns.db.chatBubbleCustom then ns.RefreshChatBubbles() end
+    if ns.db.chatBubbleCustom then module.Refresh() end
 end)
+
+module.OnLoad = module.Refresh

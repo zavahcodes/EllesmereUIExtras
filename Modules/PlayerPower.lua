@@ -15,6 +15,31 @@ local _, ns = ...
 
 local FRAME_NAME = "EllesmereUIUnitFrames_Player"
 
+local module = ns.RegisterModule({
+    key = "playerPower",
+    name = "Unit Frames",
+    defaults = {
+        playerHidePower      = false,
+        playerHidePowerExtra = 1,
+    },
+    options = {
+        { type = "checkbox", key = "playerHidePower", label = "Hide player power bar",
+          tooltip = "WoW Forever, Blizzard Style and Classic WoW UI only: hides the player frame's power bar "
+              .. "and stretches the health bar into its space." },
+        { type = "slider", key = "playerHidePowerExtra", label = "Health bar extra height",
+          tooltip = "Extra pixels added below the stretched player health bar so it reaches the frame's bottom edge.",
+          min = 0, max = 8, step = 1 },
+    },
+})
+
+-- The first build saved 3 px of extra height (overshoots the frame edge).
+function module.OnLoad(db)
+    if db.playerHidePowerExtra == 3 and not db.playerHidePowerExtraFixed then
+        db.playerHidePowerExtra = ns.DEFAULTS.playerHidePowerExtra
+    end
+    db.playerHidePowerExtraFixed = true
+end
+
 local player        -- the hooked player frame
 local pending       -- the layout pass re-seated the stock geometry
 local queued        -- a next-frame Apply is scheduled
@@ -102,7 +127,7 @@ end
 -- Options callback: on stretches now; off hands the frame back to the stock
 -- layout (a Unit Frames reload re-seats sizes and mask, and shows the power
 -- bar unless Unit Frames itself hides it).
-function ns.RefreshPlayerPower()
+function module.Refresh()
     if not Hook() then return end
     if ns.db.playerHidePower then
         -- Re-run the stock layout so the stretch starts from stock sizes

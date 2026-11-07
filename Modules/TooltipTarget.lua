@@ -8,19 +8,23 @@ if EUI_CLIENT_BLOCKED then return end -- pre-12.1 client failsafe (EllesmereUI_C
 -------------------------------------------------------------------------------
 local _, ns = ...
 local IsSecret = ns.IsSecret
+local ClassColor = ns.ClassColor
 
 local LABEL = "Target:"
 local YOU_TEXT = ">> YOU <<"
 
-local function ClassColor(classToken)
-    if not classToken or IsSecret(classToken) then return nil end
-    if EllesmereUI and EllesmereUI.GetClassColor then
-        local c = EllesmereUI.GetClassColor(classToken)
-        if c then return c.r, c.g, c.b end
-    end
-    local c = RAID_CLASS_COLORS and RAID_CLASS_COLORS[classToken]
-    if c then return c.r, c.g, c.b end
-end
+ns.RegisterModule({
+    key = "tooltipTarget",
+    name = "Tooltip",
+    defaults = {
+        tooltipTarget = true,
+    },
+    options = {
+        { type = "checkbox", key = "tooltipTarget", label = "Show target of target",
+          tooltip = "Adds a Target: line with who the hovered player or NPC is targeting (>> YOU << in red when it's you). "
+              .. "Skipped automatically when EllesmereUI's own \"Show Unit Target\" option is enabled." },
+    },
+})
 
 -- Returns name, r, g, b for the target token, or nil when there is nothing to show.
 local function TargetInfo(tu)

@@ -28,3 +28,10 @@ Every feature can be toggled on or off on its own.
 Open the settings with `/euix` (or `/ellesmereuiextras`), or go to **Options → AddOns → EllesmereUI Extras**.
 
 Settings are saved in `EllesmereUIExtrasDB`.
+
+## Adding a module
+
+1. Create a file in `Modules/` that calls `ns.RegisterModule{ key, name, defaults, options, OnLoad, Refresh }` (see the spec at the top of `Core.lua`).
+2. Add it to `EllesmereUIExtras.toc` under `# Modules`.
+
+The options panel builds itself from the registered modules.
