@@ -24,7 +24,6 @@ EUIX_PlayerPower.lua
 EUIX_ChatBubbles.lua
 
 # Loot features
-EUIX_LootRollVotes.lua
 
 # World map features
 EUIX_WorldMap.lua

@@ -16,7 +16,6 @@ local DEFAULTS = {
     chatBubbleCustom    = false,
     chatBubbleFontSize  = 13,
     chatBubbleOutline   = "OUTLINE",
-    lootRollVotes       = true,
     worldMapEnabled     = true,
 }
 ns.DEFAULTS = DEFAULTS
