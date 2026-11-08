@@ -58,11 +58,13 @@ local function PlayerMapID()
 end
 
 -------------------------------------------------------------------------------
---  Pin guards: after we set the map, Blizzard's pin setup runs under our
---  taint and its protected SetPassThroughButtons / SetPropagateMouseClicks
---  calls are blocked in combat. Shadow them per pin to skip in combat and
---  refresh the map once combat ends. Installed lazily, only once we've
---  actually changed the map, so an unused feature adds no taint.
+--  Pin guards: once we've touched the map (SetMapID, but also zooming and
+--  following, which write ScrollContainer state), Blizzard's pin setup runs
+--  under our taint and its protected SetPassThroughButtons /
+--  SetPropagateMouseClicks calls are blocked in combat. Shadow them per pin
+--  to skip in combat and refresh the map once combat ends. Installed lazily,
+--  on the first map open with the feature enabled, so an unused feature adds
+--  no taint.
 -------------------------------------------------------------------------------
 local pinGuardsInstalled = false
 local refreshAfterCombat = false
@@ -282,6 +284,7 @@ end
 -- Post hook of ToggleWorldMap / ToggleQuestLog (OnShow fires too early).
 local function OnMapOpened()
     if not Enabled() or not map:IsShown() then return end
+    InstallPinGuards() -- ZoomToPlayer below taints the map too, not just SetMapID
     StopFollowing()
     following = true
     lastViewedMapWasCurrentMap = true
