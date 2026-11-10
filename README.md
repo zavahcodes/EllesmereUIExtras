@@ -6,7 +6,6 @@ A small companion addon for **EllesmereUI** that adds features EllesmereUI doesn
 
 - **Tooltip health bar**: health bar and percentage on unit tooltips, with adjustable bar height and text size.
 - **Target of target**: shows who the hovered unit is targeting, right in the tooltip.
-- **Player frame without power bar**: hides the player power bar and lets the health bar take the extra height.
 - **Chat bubbles**: custom font size and outline for chat bubbles.
 - **World map zoomed on player**: the world map always opens on your zone, fully zoomed in and centered on your character, and follows you while it's open (drag the map to stop, double-click it to follow again). Entering a new zone with the map open switches to its map. Based on [Persistent World Map](https://www.curseforge.com/wow/addons/persistent-world-map) by LudiusMaximus (MIT License).
 

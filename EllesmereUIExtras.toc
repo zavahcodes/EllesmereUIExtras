@@ -2,7 +2,7 @@
 ## Title: |cff0cd29fEllesmereUI|r Extras
 ## Category: |cff0cd29fEllesmere|rUI
 ## Group: EllesmereUI
-## Notes: Extra features not offered by EllesmereUI (tooltip health bar, target of target, player frame without power bar, chat bubble font size/outline, world map zoomed on the player).
+## Notes: Extra features not offered by EllesmereUI (tooltip health bar, target of target, chat bubble font size/outline, world map zoomed on the player).
 ## Author: Ellesmere
 ## Version: 0.1.0
 ## Dependencies: EllesmereUI
@@ -16,7 +16,6 @@ Core.lua
 # Modules (each one registers itself; .toc order = options panel order)
 Modules/TooltipHealth.lua
 Modules/TooltipTarget.lua
-Modules/PlayerPower.lua
 Modules/ChatBubbles.lua
 Modules/WorldMap.lua
 
