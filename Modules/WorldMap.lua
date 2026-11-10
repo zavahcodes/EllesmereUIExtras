@@ -1,4 +1,3 @@
-if EUI_CLIENT_BLOCKED then return end -- pre-12.1 client failsafe (EllesmereUI_ClientGate.lua)
 -------------------------------------------------------------------------------
 --  World map: every open shows the player's zone fully zoomed in and centered
 --  on the player, and keeps following the player while open. Dragging the map
@@ -70,8 +69,8 @@ local pinGuardsInstalled = false
 local refreshAfterCombat = false
 
 local function PatchPin(pin)
-    if not pin or pin.euixPinGuarded then return end
-    pin.euixPinGuarded = true
+    if not pin or pin.zavahPinGuarded then return end
+    pin.zavahPinGuarded = true
     local origPassThrough = pin.SetPassThroughButtons
     if origPassThrough then
         pin.SetPassThroughButtons = function(self, ...)
@@ -89,8 +88,8 @@ local function PatchPin(pin)
 end
 
 local function WrapPool(pool)
-    if type(pool) ~= "table" or pool.euixPinGuarded or not pool.Acquire then return end
-    pool.euixPinGuarded = true
+    if type(pool) ~= "table" or pool.zavahPinGuarded or not pool.Acquire then return end
+    pool.zavahPinGuarded = true
     local origAcquire = pool.Acquire
     pool.Acquire = function(self, ...)
         local pin, isNew = origAcquire(self, ...)

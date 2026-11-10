@@ -1,4 +1,3 @@
-if EUI_CLIENT_BLOCKED then return end -- pre-12.1 client failsafe (EllesmereUI_ClientGate.lua)
 -------------------------------------------------------------------------------
 --  Chat bubbles: font size and outline for Blizzard's own chat bubbles. Works
 --  on the shared ChatBubbleFont object rather than the bubble frames, so it
