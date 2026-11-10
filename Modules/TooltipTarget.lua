@@ -1,4 +1,3 @@
-if EUI_CLIENT_BLOCKED then return end -- pre-12.1 client failsafe (EllesmereUI_ClientGate.lua)
 -------------------------------------------------------------------------------
 --  Target of target: a "Target:" line showing who the hovered player or NPC is
 --  targeting. Updated IN PLACE on refresh passes (Blizzard re-runs unit post

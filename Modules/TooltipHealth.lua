@@ -1,4 +1,3 @@
-if EUI_CLIENT_BLOCKED then return end -- pre-12.1 client failsafe (EllesmereUI_ClientGate.lua)
 -------------------------------------------------------------------------------
 --  Tooltip health bar. EllesmereUIBlizzardSkin hides GameTooltipStatusBar
 --  (alpha 0, "Hide Unit Health Strip") and shrinks it to 3 px when reskinned,
@@ -34,7 +33,7 @@ local module = ns.RegisterModule({
     },
 })
 
-local bar = CreateFrame("StatusBar", "EUIX_TooltipHealthBar", GameTooltip)
+local bar = CreateFrame("StatusBar", "ZavahTweaksTooltipHealthBar", GameTooltip)
 bar:SetStatusBarTexture(FLAT)
 bar:SetMinMaxValues(0, 1)
 bar:SetValue(1)
@@ -63,7 +62,8 @@ BorderEdge("TOPRIGHT", "BOTTOMRIGHT", 1, 1, 1, -1, false)
 local text = bar:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
 text:SetPoint("CENTER", bar, "CENTER", 0, 0)
 
--- EllesmereUI's font DB is only ready after login; applied lazily on first show.
+-- Uses EllesmereUI's font when it is loaded (its font DB is only ready after
+-- login), else Blizzard's; applied lazily on first show.
 local fontApplied = false
 local function ApplyFont()
     fontApplied = true

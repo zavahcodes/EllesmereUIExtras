@@ -1,6 +1,5 @@
-if EUI_CLIENT_BLOCKED then return end -- pre-12.1 client failsafe (EllesmereUI_ClientGate.lua)
 -------------------------------------------------------------------------------
---  EllesmereUIExtras: core. Saved settings, a tiny module registry, shared
+--  ZavahTweaks: core. Saved settings, a tiny module registry, shared
 --  secret-value/color helpers and a single unit-tooltip post call that every
 --  tooltip module registers into.
 --
@@ -30,9 +29,9 @@ ns.DEFAULTS = {}
 ns.db = {}
 
 function ns.RegisterModule(module)
-    assert(type(module) == "table" and module.key, "EllesmereUIExtras: module needs a key")
+    assert(type(module) == "table" and module.key, "ZavahTweaks: module needs a key")
     for k, v in pairs(module.defaults or {}) do
-        assert(ns.DEFAULTS[k] == nil, "EllesmereUIExtras: duplicate setting " .. k)
+        assert(ns.DEFAULTS[k] == nil, "ZavahTweaks: duplicate setting " .. k)
         ns.DEFAULTS[k] = v
         ns.db[k] = v
     end
@@ -118,11 +117,11 @@ loader:RegisterEvent("ADDON_LOADED")
 loader:SetScript("OnEvent", function(self, _, name)
     if name ~= ADDON_NAME then return end
     self:UnregisterEvent("ADDON_LOADED")
-    EllesmereUIExtrasDB = EllesmereUIExtrasDB or {}
+    ZavahTweaksDB = ZavahTweaksDB or {}
     for k, v in pairs(ns.DEFAULTS) do
-        if EllesmereUIExtrasDB[k] == nil then EllesmereUIExtrasDB[k] = v end
+        if ZavahTweaksDB[k] == nil then ZavahTweaksDB[k] = v end
     end
-    ns.db = EllesmereUIExtrasDB
+    ns.db = ZavahTweaksDB
     for _, module in ipairs(ns.modules) do
         if module.OnLoad then SafeCall(module.OnLoad, ns.db) end
     end

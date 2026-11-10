@@ -1,6 +1,6 @@
-# EllesmereUI Extras
+# ZavahTweaks
 
-A small companion addon for **EllesmereUI** that adds features EllesmereUI doesn't offer on its own.
+A small standalone addon with UI tweaks that Blizzard's UI doesn't offer on its own.
 
 ## Features
 
@@ -13,24 +13,23 @@ Every feature can be toggled on or off on its own.
 
 ## Requirements
 
-- **EllesmereUI** (required)
-- EllesmereUIBlizzardSkin, EllesmereUIUnitFrames (optional, supported when present)
+None. When **EllesmereUI** is installed, ZavahTweaks picks up its class colors and font, and skips its own target-of-target line if EllesmereUI's "Show Unit Target" is on.
 
 ## Installation
 
 1. Download this repository (green **Code** button → **Download ZIP**) or clone it.
-2. Put the folder in `World of Warcraft/<game version>/Interface/AddOns/` and make sure it's named exactly `EllesmereUIExtras`.
+2. Put the folder in `World of Warcraft/<game version>/Interface/AddOns/` and make sure it's named exactly `ZavahTweaks`.
 3. Restart the game or `/reload`.
 
 ## Settings
 
-Open the settings with `/euix` (or `/ellesmereuiextras`), or go to **Options → AddOns → EllesmereUI Extras**.
+Open the settings with `/zt` (or `/zavahtweaks`), or go to **Options → AddOns → ZavahTweaks**.
 
-Settings are saved in `EllesmereUIExtrasDB`.
+Settings are saved in `ZavahTweaksDB`.
 
 ## Adding a module
 
 1. Create a file in `Modules/` that calls `ns.RegisterModule{ key, name, defaults, options, OnLoad, Refresh }` (see the spec at the top of `Core.lua`).
-2. Add it to `EllesmereUIExtras.toc` under `# Modules`.
+2. Add it to `ZavahTweaks.toc` under `# Modules`.
 
 The options panel builds itself from the registered modules.

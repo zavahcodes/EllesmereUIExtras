@@ -1,14 +1,11 @@
-if EUI_CLIENT_BLOCKED then return end -- pre-12.1 client failsafe (EllesmereUI_ClientGate.lua)
 -------------------------------------------------------------------------------
 --  Options: a page in Blizzard's Settings panel (Esc > Options > AddOns >
---  EllesmereUI Extras), built from the registered modules. EllesmereUI's own
---  panel only accepts its whitelisted suite folders (EllesmereUI:RegisterModule),
---  so Extras lives here instead. One section per module name, in .toc order.
---  Settings write straight into EllesmereUIExtrasDB.
+--  ZavahTweaks), built from the registered modules. One section per module
+--  name, in .toc order. Settings write straight into ZavahTweaksDB.
 -------------------------------------------------------------------------------
 local _, ns = ...
 
-local CATEGORY_NAME = "EllesmereUI Extras"
+local CATEGORY_NAME = "ZavahTweaks"
 
 function ns.InitOptions()
     if ns.settingsCategory or not (Settings and Settings.RegisterVerticalLayoutCategory) then return end
@@ -16,7 +13,7 @@ function ns.InitOptions()
     ns.settingsCategory = category
 
     local function Register(key, varType, label)
-        return Settings.RegisterAddOnSetting(category, "EUIX_" .. key, key, ns.db,
+        return Settings.RegisterAddOnSetting(category, "ZavahTweaks_" .. key, key, ns.db,
             varType, label, ns.DEFAULTS[key])
     end
 
@@ -55,7 +52,7 @@ function ns.InitOptions()
             end
             for _, opt in ipairs(module.options) do
                 local build = builders[opt.type]
-                assert(build, "EllesmereUIExtras: unknown option type " .. tostring(opt.type))
+                assert(build, "ZavahTweaks: unknown option type " .. tostring(opt.type))
                 local setting = build(opt)
                 if module.Refresh then
                     setting:SetValueChangedCallback(function() ns.SafeCall(module.Refresh, ns.db) end)
@@ -67,9 +64,9 @@ function ns.InitOptions()
     Settings.RegisterAddOnCategory(category)
 end
 
-SLASH_EUIEXTRAS1 = "/euix"
-SLASH_EUIEXTRAS2 = "/ellesmereuiextras"
-SlashCmdList.EUIEXTRAS = function()
+SLASH_ZAVAHTWEAKS1 = "/zt"
+SLASH_ZAVAHTWEAKS2 = "/zavahtweaks"
+SlashCmdList.ZAVAHTWEAKS = function()
     local category = ns.settingsCategory
     if category and Settings and Settings.OpenToCategory then
         Settings.OpenToCategory(category:GetID())
