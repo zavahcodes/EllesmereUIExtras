@@ -3,7 +3,7 @@
 ## Notes: Small UI tweaks: tooltip health bar, target of target, chat bubble font size/outline, world map zoomed on the player.
 ## Author: Zavah
 ## Version: 0.2.0
-## OptionalDeps: EllesmereUI, EllesmereUIBlizzardSkin, EllesmereUIUnitFrames
+## OptionalDeps: EllesmereUI, EllesmereUIBlizzardSkin, EllesmereUIUnitFrames, Pawn, Baganator, ZygorGuidesViewerForever
 ## SavedVariables: ZavahTweaksDB
 ## IconTexture: Interface\Icons\INV_Misc_Gear_01
 
@@ -15,6 +15,10 @@ Modules/TooltipHealth.lua
 Modules/TooltipTarget.lua
 Modules/ChatBubbles.lua
 Modules/WorldMap.lua
+Modules/PawnFix.lua
+Modules/CharacterSheetOutline.lua
+Modules/BaganatorCombat.lua
+Modules/ZygorMapButton.lua
 
 # Options (always last, so every module is registered)
 Options.lua

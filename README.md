@@ -9,6 +9,11 @@ A small standalone addon with UI tweaks that Blizzard's UI doesn't offer on its 
 - **Chat bubbles**: custom font size and outline for chat bubbles.
 - **World map zoomed on player**: the world map always opens on your zone, fully zoomed in and centered on your character, and follows you while it's open (drag the map to stop, double-click it to follow again). Entering a new zone with the map open switches to its map. Based on [Persistent World Map](https://www.curseforge.com/wow/addons/persistent-world-map) by LudiusMaximus (MIT License).
 
+- **Pawn tooltip cache**: fixes the FPS drop while an item tooltip is open with Pawn enabled. On Forever, Pawn re-reads the item's stats through a hidden tooltip on every tooltip refresh; its result is now reused for a few seconds (cleared when Pawn resets or your gear changes). Pawn's code is not modified.
+- **EllesmereUI character sheet outline**: adds an outline (or thick outline) to the text EllesmereUI shows beside each item slot of the character sheet (item stats, weapon DPS, enchant).
+- **Baganator combat guard**: stops the ADDON_ACTION_BLOCKED error when the bag key is pressed in combat with Baganator; optionally toggles the bags once combat ends.
+- **Hide Zygor world map button**: hides the button (and its POI menu) that Zygor Guides adds to the world map border.
+
 Every feature can be toggled on or off on its own.
 
 ## Requirements
