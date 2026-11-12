@@ -27,12 +27,20 @@ local module = ns.RegisterModule({
     name = "World Map",
     defaults = {
         worldMapEnabled = true,
+        worldMapZoomZone = 100, -- % between fully zoomed out (0) and in (100)
+        worldMapZoomCity = 100,
     },
     options = {
         { type = "checkbox", key = "worldMapEnabled", label = "World map zoomed on player",
           tooltip = "Opens the world map on your zone, fully zoomed in and centered on your character, and follows you while "
               .. "it's open (drag the map to stop, double-click it to follow again). Entering a new zone with the map open "
               .. "switches to its map. Inside instances the map is Blizzard's own." },
+        { type = "slider", key = "worldMapZoomZone", label = "Zoom level (zones)",
+          tooltip = "How far the map zooms in on your character in zones: 100% is fully zoomed in, 0% shows the whole map.",
+          min = 0, max = 100, step = 5, format = function(v) return v .. "%" end },
+        { type = "slider", key = "worldMapZoomCity", label = "Zoom level (cities)",
+          tooltip = "How far the map zooms in on your character in cities: 100% is fully zoomed in, 0% shows the whole map.",
+          min = 0, max = 100, step = 5, format = function(v) return v .. "%" end },
     },
 })
 
@@ -220,7 +228,24 @@ local function UpdateThirdPartyPinScales()
     Walk(sc.Child, 0)
 end
 
--- Fully zoomed in, centered on the player. No-op where the player isn't on
+local IS_CITY_FLAG = Enum.UIMapFlag and Enum.UIMapFlag.IsCityMap
+local function IsCityMap(mapID)
+    if not mapID or not IS_CITY_FLAG or not bit then return false end
+    local info = C_Map.GetMapInfo(mapID)
+    return info and type(info.flags) == "number" and bit.band(info.flags, IS_CITY_FLAG) ~= 0 or false
+end
+
+-- Canvas scale for the zoom setting of the shown map (cities have their own).
+-- Interpolated on a log scale so every slider step zooms by the same factor.
+local function TargetScale()
+    local minScale, maxScale = sc:GetScaleForMinZoom(), sc:GetScaleForMaxZoom()
+    if not minScale or not maxScale or minScale <= 0 or minScale >= maxScale then return maxScale end
+    local setting = IsCityMap(map:GetMapID()) and ns.db.worldMapZoomCity or ns.db.worldMapZoomZone
+    local p = Clamp((tonumber(setting) or 100) / 100, 0, 1)
+    return minScale * (maxScale / minScale) ^ p
+end
+
+-- Zoomed in as set, centered on the player. No-op where the player isn't on
 -- the shown map (instances, other continents): that map stays Blizzard's.
 local function ZoomToPlayer()
     local mapID = map:GetMapID()
@@ -228,7 +253,7 @@ local function ZoomToPlayer()
     if not pos then return end
     local x, y = pos:GetXY()
     PanStop()
-    ClampedPanAndZoom(sc:GetScaleForMaxZoom(), x, y)
+    ClampedPanAndZoom(TargetScale(), x, y)
     UpdateThirdPartyPinScales()
 end
 
@@ -274,9 +299,13 @@ end
 -- Follow the player into a new zone when they were looking at their own.
 local function CheckMap()
     if not Enabled() or not map:IsShown() then return end
-    if lastViewedMapWasCurrentMap and CanReposition() and map:GetMapID() ~= PlayerMapID() then
-        -- Keep the zoom while following.
-        ResetMap(following)
+    local playerMap = PlayerMapID()
+    if lastViewedMapWasCurrentMap and CanReposition() and map:GetMapID() ~= playerMap then
+        -- Keep the zoom while following, unless going in or out of a city
+        -- (each has its own zoom setting).
+        local sameKind = IsCityMap(map:GetMapID()) == IsCityMap(playerMap)
+        ResetMap(following and sameKind)
+        if following and not sameKind then ZoomToPlayer() end
     end
 end
 
@@ -295,7 +324,9 @@ end
 
 function module.Refresh()
     if not installed then return end
-    if not Enabled() then StopFollowing() end
+    if not Enabled() then StopFollowing(); return end
+    -- A zoom slider moved with the map open: show it now.
+    if following and map:IsShown() then ZoomToPlayer() end
 end
 module.OnLoad = module.Refresh
 
@@ -378,6 +409,14 @@ local function Install()
         end
         if spt.CloseButton then spt.CloseButton:HookScript("OnClick", AfterToggle) end
         if spt.OpenButton then spt.OpenButton:HookScript("OnClick", AfterToggle) end
+    end
+
+    -- For other modules that switch the map themselves (ContinentQuests.lua).
+    ns.InstallPinGuards = InstallPinGuards
+
+    -- Resizing the map (MapResize.lua) refits the canvas, which resets the zoom too.
+    ns.OnWorldMapResized = function()
+        if Enabled() and following and map:IsShown() then ZoomToPlayer() end
     end
 
     hooksecurefunc(map, "SetMapID", function(self, mapID)

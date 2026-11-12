@@ -26,7 +26,8 @@ function ns.InitOptions()
         slider = function(opt)
             local setting = Register(opt.key, Settings.VarType.Number, opt.label)
             local options = Settings.CreateSliderOptions(opt.min, opt.max, opt.step)
-            options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right)
+            -- opt.format: optional fn(value) -> label text (e.g. "120%")
+            options:SetLabelFormatter(MinimalSliderWithSteppersMixin.Label.Right, opt.format)
             Settings.CreateSlider(category, setting, options, opt.tooltip)
             return setting
         end,
