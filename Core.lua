@@ -15,7 +15,8 @@
 --    defaults { settingKey = defaultValue, ... }
 --    options  list of controls, each one of:
 --               { type = "checkbox", key, label, tooltip }
---               { type = "slider",   key, label, tooltip, min, max, step }
+--               { type = "slider",   key, label, tooltip, min, max, step, format }
+--                 (format: optional fn(value) -> label text)
 --               { type = "dropdown", key, label, tooltip, choices = { {value, text}, ... } }
 --    OnLoad   optional fn(db), called once after saved variables load
 --    Refresh  optional fn(db), called whenever one of its settings changes
