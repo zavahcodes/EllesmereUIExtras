@@ -1,6 +1,6 @@
 ## Interface: 120000, 120001, 120005, 120007, 120100, 16001
 ## Title: ZavahTweaks
-## Notes: Small UI tweaks: tooltip health bar, target of target, chat bubble font size/outline, world map zoomed on the player.
+## Notes: Small UI tweaks: tooltip health bar, target of target, chat bubble font size/outline, world map zoomed on the player, resizable world map, quest icons on continent maps, Baganator layout kept while the bag is open, hide Battle.net friend toasts.
 ## Author: Zavah
 ## Version: 0.2.0
 ## OptionalDeps: EllesmereUI, EllesmereUIBlizzardSkin, EllesmereUIUnitFrames, Pawn, Baganator, ZygorGuidesViewerForever
@@ -15,10 +15,15 @@ Modules/TooltipHealth.lua
 Modules/TooltipTarget.lua
 Modules/ChatBubbles.lua
 Modules/WorldMap.lua
+Modules/MapResize.lua
+Modules/ContinentQuests.lua
+Modules/ContinentQuests.xml
 Modules/PawnFix.lua
 Modules/CharacterSheetOutline.lua
 Modules/BaganatorCombat.lua
+Modules/BaganatorFreeze.lua
 Modules/ZygorMapButton.lua
+Modules/BNetToasts.lua
 
 # Options (always last, so every module is registered)
 Options.lua
